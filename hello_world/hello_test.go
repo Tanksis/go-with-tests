@@ -3,11 +3,25 @@ package main
 import "testing"
 
 func TestHello(t *testing.T) {
-	got := Hello("Chris") //reuse values
-	want := "Hello, Chris"
+	t.Run("saying hello to people", func(t *testing.T) { //subtests
+		got := Hello("Chris") //reuse values
+		want := "Hello, Chris"
+		assertCorrectMessage(t, got, want)
+	})
+	t.Run("say 'Hello, World' when an empty string is supplied", func(t *testing.T) {
+		got := Hello("")
+		want := "Hello, World"
+		assertCorrectMessage(t, got, want)
+	})
+}
 
+//code to refactor and clean up functions above
+func assertCorrectMessage(t testing.TB, got, want string) { //since got, want, are both strings we can write string once
+	//t.Helper allows the test suite to know this is a helper function, so when fails occur
+	//it reports in the respective function call as opposed to the test helper
+	t.Helper()
 	if got != want {
-		t.Errorf("got %q want %q", got, want) //f strings, using .Errorf
+		t.Errorf("got %q want %q", got, want) //f string
 	}
 }
 
